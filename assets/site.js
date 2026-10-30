@@ -414,9 +414,50 @@
   }
 
   /* ---------- render ---------- */
+  /* on this day: dates from canon's history, with the fond and the exhibition item where there is one */
+  function otdLine(e) {
+    var links = [];
+    if (e.fond) links.push('<a href="/fonds.html#f' + e.fond + '">' + esc(t("fondN", { n: e.fond })) + "</a>");
+    if (e.ex) links.push('<a href="/exhibition.html?id=' + encodeURIComponent(e.ex) + "#" + e.fx + '">' + esc(t("otdDoc")) + "</a>");
+    return '<li><b class="mono">' + (e.y ? e.y : esc(t("otdEvery"))) + "</b> " + esc(bi(e)) + (links.length ? ' <span class="small">' + links.join(" · ") + "</span>" : "") + "</li>";
+  }
+  function otdDay(md) { var p = md.split("-"); return LANG === "ir" ? +p[1] + "-" + I.ui[LANG].months[+p[0] - 1] : +p[1] + " " + I.ui[LANG].months[+p[0] - 1]; }
+  function otdHome() {
+    var box = $("#otd");
+    if (!box) return;
+    getJSON("/data/onthisday.json").then(function (d) {
+      var n = iradNow(), md = pad(n.getMonth() + 1) + "-" + pad(n.getDate());
+      var today = d.entries.filter(function (e) { return e.d === md; }), head = otdDay(md), list = today;
+      if (!today.length) {
+        /* nothing today: the coming week, or else the next date in the calendar */
+        var wk = [];
+        for (var i = 1; i < 8; i++) { var x = new Date(n.getFullYear(), n.getMonth(), n.getDate() + i); wk.push(pad(x.getMonth() + 1) + "-" + pad(x.getDate())); }
+        list = d.entries.filter(function (e) { return wk.indexOf(e.d) >= 0; }).slice(0, 5);
+        if (!list.length) { var next = d.entries.filter(function (e) { return e.d > md; })[0] || d.entries[0]; list = d.entries.filter(function (e) { return e.d === next.d; }); }
+        head = t("otdNext");
+      }
+      box.innerHTML = '<div class="kicker">' + esc(head) + '</div><ul class="otd">' + list.map(function (e) { return today.length ? otdLine(e) : otdLine(e).replace("<li>", '<li><span class="small muted">' + esc(otdDay(e.d)) + "</span> "); }).join("") + '</ul><p class="small" style="margin:8px 0 0"><a href="/on-this-day.html#m' + md.slice(0, 2) + '">' + esc(t("otdAll")) + "</a></p>";
+    }).catch(function () { box.innerHTML = '<p class="muted">' + esc(t("loadFail")) + "</p>"; });
+  }
+  function otdPage() {
+    var box = $("#otdAll");
+    if (!box) return;
+    getJSON("/data/onthisday.json").then(function (d) {
+      var n = iradNow(), md = pad(n.getMonth() + 1) + "-" + pad(n.getDate()), html = "", m = "", day = "";
+      d.entries.forEach(function (e) {
+        if (e.d.slice(0, 2) !== m) { if (m) html += "</ul></section>"; m = e.d.slice(0, 2); day = ""; html += '<section class="otd-m" id="m' + m + '"><h2>' + esc(monthNom(+m)) + '</h2><ul class="otd">'; }
+        if (e.d !== day) { day = e.d; html += '<li class="otd-d' + (e.d === md ? " now" : "") + '"' + (e.d === md ? ' id="today"' : "") + ">" + esc(otdDay(e.d)) + "</li>"; }
+        html += otdLine(e);
+      });
+      box.innerHTML = html + "</ul></section>";
+      var go = location.hash && document.getElementById(location.hash.slice(1));
+      if (go) go.scrollIntoView();
+    }).catch(function () { box.innerHTML = '<p class="muted">' + esc(t("loadFail")) + "</p>"; });
+  }
   function render() {
     chrome(); staticText(); rrSlips();
-    if (PAGE === "home") home();
+    if (PAGE === "home") { home(); otdHome(); }
+    if (PAGE === "otd") otdPage();
     if (PAGE === "fonds") fondsPage();
     if (PAGE === "reading") readingPage();
     if (PAGE === "copies") copiesPage();

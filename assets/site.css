@@ -375,3 +375,10 @@ details.tr .tx { font-family: var(--serif); font-size: 1rem; padding-bottom: 12p
   .stats { grid-template-columns: repeat(2, auto); gap: 0 22px; }
   .filters input[type=search] { min-width: 0; width: 100%; flex-basis: 100%; }
 }
+ul.otd { list-style: none; padding: 0; margin: 6px 0 0; }
+ul.otd li { padding: 4px 0; border-bottom: 1px dotted var(--grey-2); }
+ul.otd li:last-child { border-bottom: 0; }
+ul.otd li b.mono { display: inline-block; min-width: 4.2em; color: var(--ink); }
+ul.otd li.otd-d { border-bottom: 0; padding-top: 12px; font-weight: 600; font-size: .92em; color: var(--grey-d); }
+ul.otd li.otd-d.now { color: var(--stamp, #b03a2c); }
+.otd-m h2 { margin-top: 26px; }
