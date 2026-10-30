@@ -85,7 +85,9 @@ window.SA_I18N = {
       exItems: "{n} documents", exSince: "First shown {d}", exCopyNote: "Copies of every document may be ordered from the Copy Section by catalogue reference.",
       exRef: "Catalogue reference", exZoom: "Enlarge", exTr: "Transcription and translation", exTrRu: "Transcription and translation", close: "Close",
       tape: "UNDER REVIEW", revStatus: "Subject to classification review", revSince: "review began {y}", revEnd: "completion date not set",
-      regDone: "Entered in the register: {no}", regDoneS: "Your request will be answered when the review is complete."
+      regDone: "Entered in the register: {no}", regDoneS: "Your request will be answered when the review is complete.",
+      revBasis: "basis: order of the Department of Public Information No. {no} of {date}",
+      regRefused: "Not entered in the register", regRefusedS: "{what}: not issued at the request of the Department of Public Information, order No. {no} of {date}. Requests for these records are not registered."
     },
 
     ir: {
@@ -166,7 +168,9 @@ window.SA_I18N = {
       exItems: "{n} dokument", exSince: "Algach körsötülgön: {d}", exCopyNote: "Ar bir dokumenttin kochürmösün katalog shiltemesi boyuncha Kochürmö bölümünön buyurtma kılsa bolot.",
       exRef: "Katalog shiltemesi", exZoom: "Chongoytuu", exTr: "Transkriptsiya jana kotormo (angliysche)", exTrRu: "Transkriptsiya jana kotormo", close: "Jabuu",
       tape: "KAROODO", revStatus: "Kupuyaluuluk boyuncha karoodo", revSince: "karoo {y}-jılı bashtalgan", revEnd: "büttürüü möönötü belgilene elek",
-      regDone: "Reestrge kirgizildi: {no}", regDoneS: "Karoo bütköndö ötünüchüñüzgö joop berilet."
+      regDone: "Reestrge kirgizildi: {no}", regDoneS: "Karoo bütköndö ötünüchüñüzgö joop berilet.",
+      revBasis: "negizi: Department of Public Information, №{no}, {date}",
+      regRefused: "Reestrge kirgizilgen jok", regRefusedS: "{what}: berilbeyt (Department of Public Information, №{no}, {date}). Bul dokumentterge ötünüchtör kattalbayt."
     },
 
     ru: {
@@ -247,7 +251,9 @@ window.SA_I18N = {
       exItems: "Документов: {n}", exSince: "Впервые показана {d}", exCopyNote: "Копии любого документа можно заказать в копировальной секции по архивному шифру.",
       exRef: "Архивный шифр", exZoom: "Увеличить", exTr: "Транскрипция и перевод", exTrRu: "Текст документа", close: "Закрыть",
       tape: "НА РАССМОТРЕНИИ", revStatus: "На рассмотрении по вопросу о засекречивании", revSince: "рассмотрение начато в {y} г.", revEnd: "срок завершения не установлен",
-      regDone: "Внесено в реестр: {no}", regDoneS: "Ответ на запрос будет дан по завершении рассмотрения."
+      regDone: "Внесено в реестр: {no}", regDoneS: "Ответ на запрос будет дан по завершении рассмотрения.",
+      revBasis: "основание: приказ Департамента общественной информации № {no} от {date}",
+      regRefused: "В реестр не внесено", regRefusedS: "{what}: не выдаётся по требованию Департамента общественной информации, приказ № {no} от {date}. Запросы на эти документы не регистрируются."
     }
   },
 

@@ -378,6 +378,18 @@
   }
 
   /* ---------- closed shelf ---------- */
+  // records not issued by order: a request naming one is refused with the order instead of a register number
+  var WITHDRAWN = [
+    [/(519|telecom|концесс|телеком)/, { en: "Fond 519, files from 2007", ir: "519-fond, 2007-jıldan berki papkalar", ru: "Фонд 519, дела с 2007 года" }, "PI-R 0214/2011", "23.06.2011"],
+    [/(baylanysh|without connection|байланыш|без связи)/, { en: "Baylanyshsyz (Arsha Books, Talas, 2023), LD 2023/1342", ru: "«Байланышсыз» (Arsha Books, Талас, 2023), LD 2023/1342" }, "PI-R 0391/2024", "15.05.2024"],
+    [/(times|таймс|ubaktys).*(15|oct|окт).*2026|2026.*(times|таймс|ubaktys)/, { en: "Irad Times, issue of 15 October 2026", ru: "«Ирад таймс», номер от 15 октября 2026 года" }, "PI-R 0811/2026", "15.10.2026"],
+    [/(times|таймс|ubaktys).*2013|2013.*(times|таймс|ubaktys)/, { en: "Irad Times, issue of 7 March 2013", ru: "«Ирад таймс», номер от 7 марта 2013 года" }, "PI-R 0067/2013", "14.03.2013"]
+  ];
+  function withdrawn(q) {
+    q = (q || "").toLowerCase().replace(/ı/g, "i");
+    for (var i = 0; i < WITHDRAWN.length; i++) if (WITHDRAWN[i][0].test(q)) return WITHDRAWN[i];
+    return null;
+  }
   function closedPage() {
     var host = $("#revList"); if (!host) return;
     getJSON("/data/closed.json").then(function (d) {
@@ -385,7 +397,7 @@
       if (shelf) shelf.innerHTML = d.records.map(function (r) { return '<div class="box" style="height:' + (78 + (r.fond || 9) % 5 * 8) + 'px"><div class="lab">' + esc(r.fond ? "Ф. " + r.fond : "ОЭЗИ") + "<br>" + esc(r.dates) + '</div><div class="tape">' + esc(t("tape")) + "</div></div>"; }).join("");
       host.innerHTML = d.records.map(function (r) {
         return '<li><h3>' + (r.fond ? '<a href="/fonds.html#f' + r.fond + '">' + esc(t("fondN", { n: r.fond })) + "</a> · " : "") + esc(tri(r.title)) + ' <span class="muted small mono">' + esc(r.dates) + "</span></h3>" +
-          "<p style=\"margin:4px 0 6px\">" + esc(bi(r.scope)) + '</p><div class="st">' + esc(t("revStatus")) + " · " + esc(t("revSince", { y: r.since })) + " · " + esc(t("revEnd")) + "</div></li>";
+          "<p style=\"margin:4px 0 6px\">" + esc(bi(r.scope)) + '</p><div class="st">' + esc(t("revStatus")) + " · " + esc(t("revSince", { y: r.since })) + " · " + esc(t("revEnd")) + (r.order ? " · " + esc(t("revBasis", { no: r.order[0], date: r.order[1] })) : "") + "</div></li>";
       }).join("");
     }).catch(function () { host.innerHTML = '<li class="muted">' + esc(t("loadFail")) + "</li>"; });
     var f = $("#regForm");
@@ -393,6 +405,8 @@
       f.dataset.bound = "1";
       f.addEventListener("submit", function (e) {
         e.preventDefault();
+        var w = withdrawn($("#kWhat").value);
+        if (w) { $("#regResult").innerHTML = '<div class="stampmsg">' + esc(t("regRefused")) + "<small>" + esc(t("regRefusedS", { what: tri(w[1]), no: w[2], date: w[3] })) + "</small></div>"; return; }
         var n = iradNow(), no = "КР-" + n.getFullYear() + "/" + String(4000 + (n.getMonth() * 211 + n.getDate() * 17 + n.getHours() * 7 + n.getMinutes()) % 5000);
         $("#regResult").innerHTML = '<div class="stampmsg ink">' + esc(t("regDone", { no: no })) + "<small>" + esc(t("regDoneS")) + "</small></div>";
       });

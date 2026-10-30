@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /fonds/519/
+Disallow: /ld/2023/1342.html
 
 Sitemap: https://archives.iradgov.org/sitemap.xml
