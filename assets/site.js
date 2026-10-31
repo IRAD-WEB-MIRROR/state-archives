@@ -414,7 +414,7 @@
   }
 
   /* ---------- render ---------- */
-  /* on this day: dates from canon's history, with the fond and the exhibition item where there is one */
+  /* on this day: dates from the national history, with the fond and the exhibition item where there is one */
   function otdLine(e) {
     var links = [];
     if (e.fond) links.push('<a href="/fonds.html#f' + e.fond + '">' + esc(t("fondN", { n: e.fond })) + "</a>");
