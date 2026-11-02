@@ -61,7 +61,8 @@
 
   /* ---------- chrome ---------- */
   var NAV = [["home", "/"], ["fonds", "/fonds.html"], ["reading", "/reading-room.html"], ["copies", "/copies.html"], ["genealogy", "/genealogy.html"], ["exhibitions", "/exhibitions.html"], ["closed", "/closed-shelf.html"], ["about", "/about.html"]];
-  var NAVPAGE = { exhibition: "exhibitions" };
+  var NAVPAGE = { exhibition: "exhibitions", leadership: "about", contacts: "about", news: "about", documents: "about", vacancies: "about", faq: "about" };
+  var KITNAV = ["news", "contacts", "leadership", "documents", "vacancies", "faq"];
   function navLabel(k) { var s = (I.ui[LANG] || {})["navS_" + k]; return s != null ? s : t("nav_" + k); }
   function navHref(k) { for (var i = 0; i < NAV.length; i++) if (NAV[i][0] === k) return NAV[i][1]; return "/"; }
   function chrome() {
@@ -94,7 +95,8 @@
         '<div><div class="femb"><img src="/assets/state-emblem-160.png" alt="" width="46" height="46"><strong>' + esc(t("mastN")) + "</strong></div>" +
         '<address style="font-style:normal">' + t("footAddr") + "</address>" + '<a class="tulpar-ch" href="https://tulparapp.com/app/#sub=archives" rel="noopener"><img src="/assets/tulpar.svg" alt="" width="22" height="22"><span>' + esc(t("footTulpar")) + "<small>@archives</small></span></a></div>" +
         "<div><h4>" + esc(t("footHours")) + "</h4>" + t("footHoursBody") + "</div>" +
-        "<div><h4>" + esc(t("footArch")) + "</h4><ul>" + ["fonds", "reading", "copies", "genealogy", "exhibitions", "closed", "about"].map(function (k) { return '<li><a href="' + navHref(k) + '">' + esc(t("nav_" + k)) + "</a></li>"; }).join("") + "</ul></div>" +
+        "<div><h4>" + esc(t("footArch")) + "</h4><ul>" + ["fonds", "reading", "copies", "genealogy", "exhibitions", "closed", "about"].map(function (k) { return '<li><a href="' + navHref(k) + '">' + esc(t("nav_" + k)) + "</a></li>"; }).join("") +
+          KITNAV.map(function (k) { return '<li><a href="/' + k + '.html">' + esc(t("kit_nav_" + k)) + "</a></li>"; }).join("") + "</ul></div>" +
         "<div><h4>" + esc(t("footGov")) + '</h4><ul><li><a href="https://iradgov.org/">' + esc(t("footGovPortal")) + '</a></li><li><a href="https://e-irad.org/">' + esc(t("footEirad")) + '</a></li><li><a href="/about.html#ld">' + esc(t("footLD")) + '</a></li><li><a href="/about.html#topo">' + esc(t("footTopo")) + "</a></li></ul></div>" +
         '</div><div class="fine"><span>' + esc(t("footCopy", { y: iradNow().getFullYear() })) + "</span><span>" + esc(t("footTime")) + "</span></div></div></footer>";
     }
@@ -123,7 +125,12 @@
     });
     document.documentElement.lang = I.htmlLang[LANG];
     var tk = document.body.getAttribute("data-title");
-    if (tk) { var tt = t("title_" + tk); document.title = (tt && tt !== "title_" + tk ? tt + " | " : "") + t("siteName"); }
+    if (tk) {
+      var tt = t("title_" + tk);
+      if (tt === "title_" + tk) tt = LANG !== "en" && P["title_" + tk] != null ? P["title_" + tk] : document.body.getAttribute("data-title-en") || "";
+      document.title = (tt ? tt + " | " : "") + t("siteName");
+    }
+    $$("[data-date]").forEach(function (el) { var p = el.getAttribute("data-date").split("-"); el.textContent = fmtDate(+p[0], +p[1], +p[2]); });
   }
   function setLang(l) {
     if (LANGS.indexOf(l) < 0 || l === LANG) return;

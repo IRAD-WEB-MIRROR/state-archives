@@ -432,3 +432,5 @@ window.SA_I18N = {
     }
   }
 };
+/* shared name used by the information pages */
+window.SITE_I18N = window.SA_I18N;
