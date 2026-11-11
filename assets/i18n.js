@@ -276,7 +276,7 @@ window.SA_I18N = {
       q5: "Onlayn körgözmölör", q5s: "Fonddordogu dokumentter, transkriptsiyası menen",
       q6: "Karoodogu dokumentter", q6s: "Kupuyaluuluk boyuncha karoodogu dokumentter",
       q7: "Mildettüü nuska", q7s: "Basmakanalar üchün LD nomerleri",
-      q8: "Toponimika bölümü", q8s: "Rasmiy jer attarı jana etiketkalardı tekshirüü",
+      q8: "Toponimika bölümü", q8s: "Rasmiy jer attarı jana etiketkalardı teksherüü",
       hEx: "Onlayn körgözmölör", hExAll: "Bardık körgözmölör",
       hNotH: "Bildirüülör",
       hHoursH: "Ish ubaktısı",
